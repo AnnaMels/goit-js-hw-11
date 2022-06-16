@@ -27,13 +27,14 @@ function onSubmitBtnClick(e) {
     pageCount = 1;
     searchImages();
     clearGallery();
+    refs.loadMoreBtn.style.display = 'none';
 };
 
 function searchImages() {
     const inputValue = refs.input.value;
-    getImages(inputValue, pageCount).then(it => {
-        countImagesPerPage(it);
-        renderCards(it);
+  getImages(inputValue, pageCount).then(it => { 
+      renderCards(it);
+      countImagesPerPage(it);
     });
 };
 
@@ -65,7 +66,7 @@ function renderCards({ hits }) {
   </div>
 </div>`
     }).join('');
-    refs.gallery.insertAdjacentHTML('beforeend', markup);
+  refs.gallery.insertAdjacentHTML('beforeend', markup);
 
     new SimpleLightbox(' .photo-card a');
 };
@@ -77,16 +78,16 @@ function clearGallery() {
 
 function countImagesPerPage({ hits, totalHits }) {
     imagesPerPage += hits.length;
-      if (hits.length === 0) {
+    if (hits.length === 0) {
         refs.loadMoreBtn.style.display = 'none';   
+      }
+  
+    if (hits.length === 0) {
+         Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
     }
     
     if (hits.length !== 0) {
         refs.loadMoreBtn.style.display = 'block'; 
-    }
-
-    if (hits.length === 0) {
-         Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
     }
 
     if (imagesPerPage === totalHits && hits.length !== 0) {
